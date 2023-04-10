@@ -4,7 +4,7 @@ export default class Kanban{
         const data = read().find(column => {
             return column.columnId == columnId;
         });
-
+        
         return data.tasks;
     }
 
@@ -14,13 +14,13 @@ export default class Kanban{
         const column = data.find(column => {
             return column.columnId == columnId;
         });
-
         const task = {
             taskId: Math.floor(Math.random() * 100000),
             content: content
         };
 
         column.tasks.push(task);
+        console.log(data);
         save(data);
 
         return task;
@@ -36,11 +36,10 @@ export default class Kanban{
                 });
     
                 if(task){
-                   return [task, column];
+                    return [task, column];
                 }
             }
         }
-
         const [task, currentColumn] = findColumnTask();
 
         const targetColumn = data.find(column => {
@@ -52,21 +51,19 @@ export default class Kanban{
         targetColumn.tasks.push(task);
 
         save(data);
-
     }
 
     static deleteTask(taskId){
         const data = read();
-        
+
         for(const column of data){
             const task = column.tasks.find(item => {
                 return item.taskId == taskId;
             });
-            
+
             if(task){
                 column.tasks.splice(column.tasks.indexOf(task), 1);
-            }
-          
+            }            
         }
 
         save(data);
@@ -84,11 +81,11 @@ function read(){
 
     if(!data){
         return [
-            {cloumnId:0, tasks: []},
-            {cloumnId:1, tasks: []},
-            {cloumnId:2, tasks: []}
+            {columnId: 0, tasks: []}, 
+            {columnId: 1, tasks: []}, 
+            {columnId: 2, tasks: []}
         ];
-    } 
+    }
 
     return JSON.parse(data);
 }
